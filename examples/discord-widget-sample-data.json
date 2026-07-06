@@ -1,0 +1,21 @@
+{
+  "data": {
+    "dynamic": [
+      { "type": 1, "name": "title", "value": "YourName" },
+      { "type": 1, "name": "subtitle", "value": "UID YOUR_HSR_UID • Europe" },
+      { "type": 1, "name": "stat1_label", "value": "Energie" },
+      { "type": 1, "name": "stat1_value", "value": "149/300" },
+      { "type": 1, "name": "stat2_label", "value": "Jours connexion" },
+      { "type": 1, "name": "stat2_value", "value": "999" },
+      { "type": 1, "name": "stat3_label", "value": "Succes" },
+      { "type": 1, "name": "stat3_value", "value": "800" },
+      { "type": 1, "name": "stat4_label", "value": "Tresors ouverts" },
+      { "type": 1, "name": "stat4_value", "value": "500" },
+      { "type": 1, "name": "stat5_label", "value": "Univers simule" },
+      { "type": 1, "name": "stat5_value", "value": "14000/14000" },
+      { "type": 1, "name": "stat6_label", "value": "Boss hebdo" },
+      { "type": 1, "name": "stat6_value", "value": "3/3" },
+      { "type": 1, "name": "footer", "value": "Maj 2026-07-06T00:00:00.000Z" }
+    ]
+  }
+}

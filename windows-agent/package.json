@@ -1,0 +1,13 @@
+{
+  "name": "hsr-hoyolab-windows-agent",
+  "version": "1.0.0",
+  "description": "Windows Playwright agent that reads HoYoLAB HSR responses and pushes them to the Debian widget API.",
+  "main": "agent.js",
+  "scripts": {
+    "start": "node agent.js",
+    "install-browser": "playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "^1.49.1"
+  }
+}

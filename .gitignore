@@ -1,0 +1,29 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Secrets / local config
+.env
+*.local
+hoyo-curl.sh
+hoyo-note-curl.sh
+hoyo-index-curl.sh
+windows-agent/config.json
+windows-agent/push-secret.txt
+windows-agent/agent.log
+windows-agent/hoyolab-profile/
+windows-agent/node_modules/
+
+# Runtime data
+data/*.json
+data/*.txt
+!data/.gitkeep
+
+# Build output
+dist/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

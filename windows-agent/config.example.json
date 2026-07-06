@@ -1,0 +1,6 @@
+{
+  "uid": "YOUR_HSR_UID",
+  "debianPushUrl": "http://YOUR_DEBIAN_IP/api/push-hoyo",
+  "targetUrl": "https://act.hoyolab.com/app/community-game-records-sea/rpg/index.html?bbs_presentation_style=fullscreen&gid=6&user_id=YOUR_HOYOLAB_USER_ID&utm_medium=gamecard&bbs_theme=dark&bbs_theme_device=1&utm_source=github#/hsr",
+  "checkEveryMs": 60000
+}
