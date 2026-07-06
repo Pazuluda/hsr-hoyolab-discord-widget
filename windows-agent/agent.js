@@ -47,6 +47,33 @@ async function sendToDebian(json, kind) {
   console.log(`[OK] ${kind} envoye a Debian: ${new Date().toLocaleString()}`);
 }
 
+async function refreshHsrPage(page) {
+  console.log("[INFO] Refresh page HSR...");
+
+  try {
+    await page.goto(TARGET_URL, {
+      waitUntil: "domcontentloaded",
+      timeout: 60000
+    });
+
+    await page.waitForTimeout(8000);
+    return;
+  } catch (err) {
+    console.log("[WARN] page.goto impossible:", err.message);
+  }
+
+  try {
+    await page.reload({
+      waitUntil: "domcontentloaded",
+      timeout: 60000
+    });
+
+    await page.waitForTimeout(8000);
+  } catch (err) {
+    console.log("[WARN] page.reload impossible:", err.message);
+  }
+}
+
 async function main() {
   console.log("[INFO] Lancement Chromium...");
 
@@ -67,6 +94,7 @@ async function main() {
       if (!isNote && !isIndex) return;
 
       const kind = isNote ? "note" : "index";
+
       console.log(`[${kind.toUpperCase()} DETECTE]`, url);
 
       const json = await res.json().catch(() => null);
@@ -94,17 +122,12 @@ async function main() {
   });
 
   console.log("[INFO] Ouverture page HSR...");
-  await page.goto(TARGET_URL, { waitUntil: "domcontentloaded" });
+  await refreshHsrPage(page);
 
   while (true) {
-    console.log(`[INFO] Refresh dans ${CHECK_EVERY_MS / 1000}s...`);
+    console.log(`[INFO] Prochain refresh dans ${CHECK_EVERY_MS / 1000}s...`);
     await page.waitForTimeout(CHECK_EVERY_MS);
-
-    try {
-      await page.goto(TARGET_URL, { waitUntil: "domcontentloaded" });
-    } catch (err) {
-      console.log("[WARN] Reload impossible:", err.message);
-    }
+    await refreshHsrPage(page);
   }
 }
 
