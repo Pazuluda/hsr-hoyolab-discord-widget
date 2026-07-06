@@ -28,6 +28,15 @@ if (!UID || !DEBIAN_PUSH_URL || !PUSH_SECRET || !TARGET_URL) {
   process.exit(1);
 }
 
+function makeFreshUrl(url) {
+  const [beforeHash, hash = ""] = url.split("#");
+  const fresh = new URL(beforeHash);
+
+  fresh.searchParams.set("_refresh", String(Date.now()));
+
+  return hash ? `${fresh.toString()}#${hash}` : fresh.toString();
+}
+
 async function sendToDebian(json, kind) {
   const res = await fetch(DEBIAN_PUSH_URL, {
     method: "POST",
@@ -48,29 +57,47 @@ async function sendToDebian(json, kind) {
 }
 
 async function refreshHsrPage(page) {
-  console.log("[INFO] Refresh page HSR...");
+  console.log("[INFO] Vrai refresh page HSR...");
+
+  const freshUrl = makeFreshUrl(TARGET_URL);
 
   try {
-    await page.goto(TARGET_URL, {
+    await page.bringToFront();
+
+    console.log("[INFO] Navigation anti-cache...");
+    await page.goto(freshUrl, {
       waitUntil: "domcontentloaded",
       timeout: 60000
     });
 
-    await page.waitForTimeout(8000);
-    return;
+    await page.waitForTimeout(5000);
   } catch (err) {
-    console.log("[WARN] page.goto impossible:", err.message);
+    console.log("[WARN] page.goto anti-cache impossible:", err.message);
   }
 
   try {
+    console.log("[INFO] Reload navigateur...");
     await page.reload({
       waitUntil: "domcontentloaded",
       timeout: 60000
     });
 
-    await page.waitForTimeout(8000);
+    await page.waitForTimeout(5000);
   } catch (err) {
     console.log("[WARN] page.reload impossible:", err.message);
+  }
+
+  try {
+    console.log("[INFO] F5 fallback...");
+    await page.keyboard.press("F5");
+
+    await page.waitForLoadState("domcontentloaded", {
+      timeout: 60000
+    }).catch(() => {});
+
+    await page.waitForTimeout(8000);
+  } catch (err) {
+    console.log("[WARN] F5 impossible:", err.message);
   }
 }
 
@@ -125,7 +152,7 @@ async function main() {
   await refreshHsrPage(page);
 
   while (true) {
-    console.log(`[INFO] Prochain refresh dans ${CHECK_EVERY_MS / 1000}s...`);
+    console.log(`[INFO] Prochain vrai refresh dans ${CHECK_EVERY_MS / 1000}s...`);
     await page.waitForTimeout(CHECK_EVERY_MS);
     await refreshHsrPage(page);
   }
